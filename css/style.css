@@ -302,6 +302,30 @@ input:focus {
 .close-modal:hover {
    color: var(--dark-color);
 }
+
+.toast {
+   visibility: hidden;
+   min-width: 250px;
+   background-color: var(--primary-color);
+   color: #fff;
+   text-align: center;
+   border-radius: 5px;
+   position: fixed;
+   padding: 10px;
+   z-index: 1000;
+   right: 30px;
+   top: 30px;
+   font-size: 14px;
+   opacity: 0;
+   transition: opacity 0.5s, visibility 0.5s;
+}
+.toast.show {
+   visibility: visible;
+   opacity: 1;
+}
+
+
+
  
 
 

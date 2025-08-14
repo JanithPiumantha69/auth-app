@@ -1,4 +1,4 @@
-//firebase configurations
+  //firebase configurations
 const firebaseConfig = {
     apiKey: "AIzaSyCNY9zun-ZR1d_yofw2gI0kh3FW-BhqaOk",
     authDomain: "auth-app-da4c2.firebaseapp.com",
@@ -13,16 +13,15 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-
 //DOM elements
 const signUpButton = document.getElementById('signUp');
 const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
 const signupForm = document.getElementById('signup-form');
 const loginForm = document.getElementById('login-form');
-const forgetPasswordLink = document.getElementById('forget-password');
-const forgetPasswordModal =document.getElementById('forgot-password-modal');
-const closeModal = document.querySelector('.close-modal');
+const forgotPasswordLink = document.getElementById('forget-password');
+const forgotPasswordModal = document.getElementById('forgot-password-modal');
+const closeModel = document.querySelector('.close-modal');
 const toast = document.getElementById('toast');
 const resetPasswordForm = document.getElementById('reset-password-form');
 const toastMessage = document.getElementById('toast-message');
@@ -34,46 +33,75 @@ signUpButton.addEventListener('click', () => {
 signInButton.addEventListener('click', () => {
     container.classList.remove('right-panel-active');
 });
-
-forgetPasswordLink.addEventListener('click', (e) => {
+forgotPasswordLink.addEventListener('click', (e) => {
     e.preventDefault();
-    forgetPasswordModal.style.display = 'block';
+    forgotPasswordModal.style.display = 'block';
+});
+closeModel.addEventListener('click', () => {
+    forgotPasswordModal.style.display = 'none';
 });
 
-closeModal.addEventListener('click', () => {
-    forgetPasswordModal.style.display = 'none';
-});
 
-signupForm.addEventListener('submit', (e)=>{
-    e.preventDefault(); //stop form submission
-    
-    //sign up process
-    const name =signupForm['signup-name'].value;
-    const email =signupForm['signup-email'].value;
-    const password =signupForm['signup-password'].value;
-    const confirmPassword =signupForm['signup-confirm-password'].value;
+signupForm.addEventListener('submit', (e) => {
+   e.preventDefault();
+    //signup process
+    const name= signupForm['signup-name'].value;
+    const email= signupForm['signup-email'].value;
+    const password= signupForm['signup-password'].value;
+    const confirmPassword= signupForm['signup-confirm-password'].value;
 
-    //validate password
-    if(password !== confirmPassword){
-        console.log('Password do not match');        
+    //validation part
+    if(password !==confirmPassword){
+        console.log('Password do not match');
         return;
     }
-
-    //create user with firebase auth
-    auth.createUserWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-        //update user profile with name
-        return userCredential.user.updateProfile({
-            displayName: name
-        });
-    }) 
-    .then(()=>{
-        console.log('Account created successfully');
-        signupForm.reset();
-        container.classList.remove('right-panel-active');
-    })       
-    .catch((error)=>{
-        console.log('Error: ${error.message}');
+    //create user with firebase
+   auth.createUserWithEmailAndPassword(email,password)
+   .then((userCredential)=>{
+    //update user profile with name 
+    return userCredential.user.updateProfile({
+        displayName:name
     });
+   })
+   .then(()=>{
+    showToast('Account created successfully')
+    signupForm.reset();
+    container.classList.remove('right-panel-active');
+   })
+   .catch((error)=>{
+    showToast(error.message, 'error');
+   })
+}); 
 
+//Sign In
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const email = loginForm['login-email'].value;
+    const password = loginForm['login-password'].value;
+    auth.signInWithEmailAndPassword(email, password)
+    .then(()=>{
+        showToast('Logged in successfully!!', 'success');
+        loginForm.reset();
+        //redirect to dashboard
+        //window.loaction.href = 'dashboard.html'
+    })
+    .catch((error)=>{
+        showToast(error.message,'error');
+    });
 });
+
+function showToast(message, type){
+   toastMessage.textContent = message;
+   toast.className = 'toast show'
+ 
+   if(type){
+    toast.classList.add(type);
+   }
+   setTimeout(()=>{
+     toast.className = toast.className.replace('show', '');
+     if(type){
+        toast.classList.remove(type);
+     }
+   },3000);
+}
