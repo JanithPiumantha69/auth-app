@@ -84,7 +84,7 @@ loginForm.addEventListener('submit', (e) => {
         showToast('Logged in successfully!!', 'success');
         loginForm.reset();
         //redirect to dashboard
-        //window.loaction.href = 'dashboard.html'
+        window.location.href = 'dashboard.html'
     })
     .catch((error)=>{
         showToast(error.message,'error');
@@ -105,3 +105,14 @@ function showToast(message, type){
      }
    },3000);
 }
+
+//auth state observer
+auth.onAuthStateChanged((user) => {
+    if(user){
+        //user signed in
+        window.location.href = 'dashboard.html';
+    }else{
+        //user is signed out
+        window.location.href = 'index.html';
+    }
+})
