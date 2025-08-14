@@ -21,6 +21,11 @@ const container = document.getElementById('container');
 const signupForm = document.getElementById('signup-form');
 const loginForm = document.getElementById('login-form');
 const forgetPasswordLink = document.getElementById('forget-password');
+const forgetPasswordModal =document.getElementById('forgot-password-modal');
+const closeModal = document.querySelector('.close-modal');
+const toast = document.getElementById('toast');
+const resetPasswordForm = document.getElementById('reset-password-form');
+const toastMessage = document.getElementById('toast-message');
 
 //Event Listeners
 signUpButton.addEventListener('click', () => {
@@ -28,6 +33,15 @@ signUpButton.addEventListener('click', () => {
 });
 signInButton.addEventListener('click', () => {
     container.classList.remove('right-panel-active');
+});
+
+forgetPasswordLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    forgetPasswordModal.style.display = 'block';
+});
+
+closeModal.addEventListener('click', () => {
+    forgetPasswordModal.style.display = 'none';
 });
 
 signupForm.addEventListener('submit', (e)=>{
